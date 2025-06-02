@@ -1,0 +1,7 @@
+node_modules/
+.env
+.vscode/
+coverage/
+*.lcov
+*.local
+docker-compose.override.yml
