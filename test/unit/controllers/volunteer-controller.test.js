@@ -77,19 +77,22 @@ describe("Volunteer Controller", () => {
 
   describe("getVolunteersByTask", () => {
     it("devuelve voluntarios con datos del usuario", async () => {
-      req.params.taskId = "task123";
-
       const volunteers = [
         {
           id: "vol1",
           taskId: "task123",
-          userId: { username: "ana", email: "ana@mail.com" },
+          userId: "user123",
+          comment: "Quiero ayudar",
         },
       ];
 
-      Volunteer.find.mockReturnValue({
-        populate: jest.fn().mockResolvedValue(volunteers),
-      });
+      Volunteer.find = jest.fn().mockResolvedValue(volunteers);
+
+      const req = { params: { taskId: "task123" } };
+      const res = {
+        json: jest.fn(),
+      };
+      const next = jest.fn();
 
       await getVolunteersByTask(req, res, next);
 

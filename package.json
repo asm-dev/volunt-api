@@ -7,7 +7,7 @@
     "dev": "node --watch ./server.js",
     "start": "node ./server.js",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --coverage",
-    "test:integration": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --testPathPattern=integration"
+    "test:ci": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --coverage"
   },
   "repository": {
     "type": "git",

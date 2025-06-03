@@ -31,7 +31,7 @@ export const getVolunteersByTask = async (req, res, next) => {
   try {
     const volunteers = await Volunteer.find({
       taskId: req.params.taskId,
-    }).populate("userId", "username email");
+    });
     res.json(volunteers);
   } catch (err) {
     next(err);
