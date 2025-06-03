@@ -9,17 +9,53 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: voluntapp
+          POSTGRES_PASSWORD: voluntapp
+          POSTGRES_DB: voluntapp_db
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      mongo:
+        image: mongo:6
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --eval 'db.adminCommand({ ping: 1 })'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - uses: actions/checkout@v3
-
-      - name: Use Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "20"
-
+          node-version: 18
       - name: Install dependencies
         run: npm install
-
       - name: Run tests
+        env:
+          POSTGRES_URI: postgres://voluntapp:voluntapp@localhost:5432/voluntapp_db
+          MONGO_URI: mongodb://localhost:27017/voluntapp_test
+          REDIS_URL: redis://localhost:6379
+          NODE_ENV: test
         run: npm test
