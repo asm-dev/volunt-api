@@ -1,0 +1,155 @@
+{
+  "info": {
+    "_postman_id": "voluntapi-collection-id",
+    "name": "VoluntAPI",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Colección de endpoints para la API de micro-voluntariado VoluntAPI"
+  },
+  "item": [
+    {
+      "name": "Registro de Usuario",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"juan\",\n  \"email\": \"juan@mail.com\",\n  \"password\": \"123456\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/auth/register",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["auth", "register"]
+        }
+      }
+    },
+    {
+      "name": "Login de Usuario",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"juan@mail.com\",\n  \"password\": \"123456\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/auth/login",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["auth", "login"]
+        }
+      }
+    },
+    {
+      "name": "Listar tareas públicas",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/tasks",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["tasks"]
+        }
+      }
+    },
+    {
+      "name": "Crear nueva tarea",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{jwt}}", "type": "text" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Diseñar cartel\",\n  \"description\": \"Cartel para campaña ambiental\",\n  \"category\": \"diseño\",\n  \"deadline\": \"2025-07-01T00:00:00.000Z\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/tasks",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["tasks"]
+        }
+      }
+    },
+    {
+      "name": "Editar tarea",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{jwt}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Diseñar cartel actualizado\",\n  \"status\": \"in_progress\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/tasks/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["tasks", "1"]
+        }
+      }
+    },
+    {
+      "name": "Eliminar tarea",
+      "request": {
+        "method": "DELETE",
+        "header": [{ "key": "Authorization", "value": "Bearer {{jwt}}" }],
+        "url": {
+          "raw": "http://localhost:3000/tasks/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["tasks", "1"]
+        }
+      }
+    },
+    {
+      "name": "Inscribirse como voluntario",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{jwt}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"taskId\": \"1\",\n  \"comment\": \"¡Puedo ayudar con esto!\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/volunteers",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["volunteers"]
+        }
+      }
+    },
+    {
+      "name": "Listar voluntarios de una tarea",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/volunteers/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["volunteers", "1"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "jwt",
+      "value": ""
+    }
+  ]
+}
