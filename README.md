@@ -6,15 +6,18 @@ Esta API se divide en varios servicios con responsabilidades claras. A nivel de 
 
 Además, se incorpora **Redis** para cachear tareas públicas, mejorando el rendimiento en endpoints muy consultados y reduciendo la carga de consultas directas a la base de datos.
 
+> [!NOTE]  
+> Se comprueba que el deploy a un entorno de producción sería completamente viable utilizando Heroku, donde levantamos una BD PostgreSQL, Redis y conectamos con un cluster de Mongo. Dado que por razones de seguridad deberíamos configurar accesos mediante IP/VPN y puesto que no hay add-ons gratuitos en Heroku, no comparto el link en el repositorio ya que eliminaré el acceso a dichos add-ons en el futuro cercano.
+
 ## Características técnicas
 
-- **JWT Authentication**: Seguridad por token con expiración y verificación middleware.
-- **Bcrypt**: Contraseñas hasheadas con salt único para proteger credenciales.
-- **Middleware de Seguridad**: Incluye Helmet, sanitización manual y validación exhaustiva de datos.
-- **Redis**: Cache TTL de tareas para mejorar el tiempo de respuesta.
-- **Docker**: Contenerización del proyecto para desarrollo y producción.
-- **Testing**: Soporte para pruebas unitarias e integración con Jest y Supertest.
-- **CI/CD**: Se ejecutan tests y hace un deploy a Heroku al hacer push a main.
+- Autenticación con JWT. Seguridad por token con expiración y verificación middleware.
+- Contraseñas hasheadas. Usamos Bcrypts para hasear los datos de contraseñas con un salt único para proteger credenciales.
+- Middleware de seguridad. Incluye Helmet, sanitización manual y validación exhaustiva de datos.
+- Rendimiento mejorado mediante cache. Permitimos con Redys cache TTL de tareas, lo que mejora el tiempo de respuesta.
+- Uso de contenedores Docker. Facilita el desarrollo y producción.
+- Cobertura de test superior al 80%. Soporte para pruebas unitarias e integración con Jest y Supertest.
+- CI/CD. Se ejecutan tests y hace un deploy a Heroku al hacer push a main.
 
 Uno de los objetivos principales es asegurar la **seguridad**
 
@@ -25,12 +28,12 @@ Uno de los objetivos principales es asegurar la **seguridad**
 
 ## Instalación y ejecución
 
-### Requisitos
+### ¿Qué necesito?
 
 - Docker y Docker Compose
 - Node.js 18+ (si lo ejecutas fuera de contenedor Docker)
 
-### Cómo levantar la aplicación
+### ¿Cómo levanto la aplicación?
 
 ```bash
 git clone https://github.com/asm-devo/voluntapi.git
@@ -45,7 +48,11 @@ Ejecutamos `npm run dev` y la API estará disponible en [http://localhost:3000](
 
 ![image](https://github.com/user-attachments/assets/0885bfad-4b22-418a-ac64-fd39b3f5212e)
 
-Una vez levantada la aplicación, puedes ejecutar los tests con `npm run test` y probar la API importando el archivo `docs/postman_collection.json` en Postman para tener acceso inmediato a todos los endpoints con varios ejemplos de uso.
+Una vez levantada la aplicación, puedes ejecutar los **tests** con `npm run test`:
+
+![image](https://github.com/user-attachments/assets/201fd3f0-7ec6-408e-91f0-8650726184fe)
+
+Para **probar la API** te recomiendo importar el archivo `docs/postman_collection.json` en Postman, ya que permite acceso inmediato a todos los endpoints con varios ejemplos de uso directo.
 
 ## Endpoints principales
 
