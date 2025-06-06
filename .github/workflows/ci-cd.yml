@@ -46,12 +46,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
+
       - name: Install dependencies
         run: npm install
+
       - name: Run tests
         env:
           POSTGRES_URI: postgres://voluntapp:voluntapp@localhost:5432/voluntapp_db
@@ -59,3 +62,17 @@ jobs:
           REDIS_URL: redis://localhost:6379
           NODE_ENV: test
         run: npm test
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Deploy to Heroku
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: "volunt-api"
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
