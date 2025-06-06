@@ -57,7 +57,7 @@ jobs:
 
       - name: Run tests
         env:
-          POSTGRES_URI: postgres://voluntapp:voluntapp@localhost:5432/voluntapp_db
+          DATABASE_URL: postgres://voluntapp:voluntapp@localhost:5432/voluntapp_db
           MONGO_URI: mongodb://localhost:27017/voluntapp_test
           REDIS_URL: redis://localhost:6379
           NODE_ENV: test
