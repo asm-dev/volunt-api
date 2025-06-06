@@ -54,7 +54,7 @@ Una vez levantada la aplicación, puedes ejecutar los **tests** con `npm run tes
 
 Para **probar la API** te recomiendo importar el archivo `docs/postman_collection.json` en Postman, ya que permite acceso inmediato a todos los endpoints con varios ejemplos de uso directo.
 
-## Endpoints principales
+Los **endpoints** disponibles son:
 
 | Método | Ruta                | Descripción                    |
 | ------ | ------------------- | ------------------------------ |
