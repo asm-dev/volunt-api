@@ -12,9 +12,9 @@ Además, se incorpora **Redis** para cachear tareas públicas, mejorando el rend
 - **Bcrypt**: Contraseñas hasheadas con salt único para proteger credenciales.
 - **Middleware de Seguridad**: Incluye Helmet, sanitización manual y validación exhaustiva de datos.
 - **Redis**: Cache TTL de tareas para mejorar el tiempo de respuesta.
-- **Docker**: Contenerización total del proyecto para desarrollo y producción.
+- **Docker**: Contenerización del proyecto para desarrollo y producción.
 - **Testing**: Soporte para pruebas unitarias e integración con Jest y Supertest.
-- **CI/CD Ready**: Preparado para GitHub Actions u otros workflows automáticos.
+- **CI/CD**: Se ejecutan tests y hace un deploy a Heroku al hacer push a main.
 
 Uno de los objetivos principales es asegurar la **seguridad**
 
@@ -30,18 +30,22 @@ Uno de los objetivos principales es asegurar la **seguridad**
 - Docker y Docker Compose
 - Node.js 18+ (si lo ejecutas fuera de contenedor Docker)
 
-### Pasos
+### Cómo levantar la aplicación
 
 ```bash
-git clone https://github.com/tu-usuario/voluntapi.git
+git clone https://github.com/asm-devo/voluntapi.git
 cd voluntapi
 cp .env.example .env
 docker-compose up --build
 ```
 
-La API estará disponible en [http://localhost:3000](http://localhost:3000)
+![image](https://github.com/user-attachments/assets/4e8c2742-1116-4817-b11b-0f00cf7309c8)
 
----
+Ejecutamos `npm run dev` y la API estará disponible en [http://localhost:3000](http://localhost:3000).
+
+![image](https://github.com/user-attachments/assets/0885bfad-4b22-418a-ac64-fd39b3f5212e)
+
+Una vez levantada la aplicación, puedes ejecutar los tests con `npm run test` y probar la API importando el archivo `docs/postman_collection.json` en Postman para tener acceso inmediato a todos los endpoints con varios ejemplos de uso.
 
 ## Endpoints principales
 
@@ -56,15 +60,8 @@ La API estará disponible en [http://localhost:3000](http://localhost:3000)
 | POST   | /volunteers         | Inscribirse a una tarea        |
 | GET    | /volunteers/:taskId | Ver voluntarios de una tarea   |
 
----
 
-## Pruebas
-
-El objetivo es una cobertura de test mínima del 80%. Las pruebas cubren tanto funciones puras como endpoints protegidos. Puedes ejecutar los tests con `npm run test`
-
-Si lo que deseas es probar la API en uso, puedes importar el archivo `docs/postman_collection.json` en Postman para tener acceso inmediato a todos los endpoints con varios ejemplos de uso.
-
-## 🐳 Decisión sobre la imagen Docker
+## Notas sobre la imagen Docker
 
 Este proyecto utiliza la imagen base:
 
