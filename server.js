@@ -13,13 +13,14 @@ const startServer = async () => {
     await sequelize.authenticate();
     console.log("Conectado a PostgreSQL");
 
+    await sequelize.sync({ alter: true });
+    console.log("Tablas sincronizadas");
+
     await mongoose.connect(MONGO_URI);
     console.log("Conectado a MongoDB");
 
     app.listen(PORT, () => {
-      console.log(
-        `Servidor en ejecución en el puerto http://localhost:${PORT}`
-      );
+      console.log(`Servidor en ejecución.`);
     });
   } catch (error) {
     console.error("Error al iniciar el servidor:", error);
