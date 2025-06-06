@@ -18,6 +18,10 @@ app.use("/auth", authRoutes);
 app.use("/tasks", taskRoutes);
 app.use("/volunteers", volunteerRoutes);
 
+app.get("/", (req, res) => {
+  res.send("Volunt-API en funcionamiento");
+});
+
 app.use(errorHandler);
 
 export default app;
