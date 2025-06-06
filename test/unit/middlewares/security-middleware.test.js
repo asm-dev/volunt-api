@@ -1,6 +1,7 @@
+import { jest } from "@jest/globals";
 import { sanitizeInputs } from "../../../middlewares/security-middleware.js";
 
-describe("sanitizeInputs middleware", () => {
+describe("Security middleware", () => {
   let req, res, next;
 
   beforeEach(() => {

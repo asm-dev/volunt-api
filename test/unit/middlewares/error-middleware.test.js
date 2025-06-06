@@ -1,4 +1,6 @@
-describe("errorHandler middleware", () => {
+import { jest } from "@jest/globals";
+
+describe("Error handler middleware", () => {
   let errorHandler;
   let req, res, next;
 

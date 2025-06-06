@@ -1,30 +1,45 @@
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import User from "../../../models/user-model.js";
+import { jest } from "@jest/globals";
 
-jest.mock("bcrypt");
-jest.mock("jsonwebtoken");
-jest.mock("../../../models/user-model.js");
+jest.unstable_mockModule("bcrypt", () => ({
+  default: {
+    hash: jest.fn(),
+    compare: jest.fn(),
+  },
+}));
+
+jest.unstable_mockModule("jsonwebtoken", () => ({
+  default: {
+    sign: jest.fn(),
+  },
+}));
+
+jest.unstable_mockModule("../../../models/user-model.js", () => ({
+  default: {
+    create: jest.fn(),
+    findOne: jest.fn(),
+  },
+}));
+
+const bcrypt = (await import("bcrypt")).default;
+const jwt = (await import("jsonwebtoken")).default;
+const User = (await import("../../../models/user-model.js")).default;
+const { login, register } = await import(
+  "../../../controllers/auth-controller.js"
+);
 
 describe("Auth Controller", () => {
-  let login, register;
   let req, res, next;
 
-  beforeAll(async () => {
+  beforeEach(() => {
     process.env.JWT_SECRET = "secret";
 
-    const controller = await import("../../../controllers/auth-controller.js");
-    login = controller.login;
-    register = controller.register;
-  });
-
-  beforeEach(() => {
     req = { body: {} };
     res = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
     };
     next = jest.fn();
+    jest.clearAllMocks();
   });
 
   describe("register", () => {
@@ -77,7 +92,7 @@ describe("Auth Controller", () => {
       expect(bcrypt.compare).toHaveBeenCalledWith("password123", "hashed");
       expect(jwt.sign).toHaveBeenCalledWith(
         { id: 1, email: "test@example.com" },
-        "secret",
+        "supersecreto123",
         { expiresIn: "1h" }
       );
       expect(res.json).toHaveBeenCalledWith({ token: "fake-jwt-token" });

@@ -1,18 +1,20 @@
-import Volunteer from "../../../models/volunteer-model.js";
+import { jest } from "@jest/globals";
 
-jest.mock("../../../models/volunteer-model.js");
+jest.unstable_mockModule("../../../models/volunteer-model.js", () => ({
+  default: {
+    findOne: jest.fn(),
+    create: jest.fn(),
+    find: jest.fn(),
+  },
+}));
+
+const Volunteer = (await import("../../../models/volunteer-model.js")).default;
+const { registerVolunteer, getVolunteersByTask } = await import(
+  "../../../controllers/volunteer-controller.js"
+);
 
 describe("Volunteer Controller", () => {
-  let registerVolunteer, getVolunteersByTask;
   let req, res, next;
-
-  beforeAll(async () => {
-    const controller = await import(
-      "../../../controllers/volunteer-controller.js"
-    );
-    registerVolunteer = controller.registerVolunteer;
-    getVolunteersByTask = controller.getVolunteersByTask;
-  });
 
   beforeEach(() => {
     req = {
@@ -86,7 +88,7 @@ describe("Volunteer Controller", () => {
         },
       ];
 
-      Volunteer.find = jest.fn().mockResolvedValue(volunteers);
+      Volunteer.find.mockResolvedValue(volunteers);
 
       const req = { params: { taskId: "task123" } };
       const res = {

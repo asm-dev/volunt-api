@@ -1,7 +1,13 @@
-import { validationResult } from "express-validator";
-import { validate } from "../../../middlewares/validation-middleware.js";
+import { jest } from "@jest/globals";
 
-jest.mock("express-validator");
+jest.unstable_mockModule("express-validator", () => ({
+  validationResult: jest.fn(),
+}));
+
+const { validationResult } = await import("express-validator");
+const { validate } = await import(
+  "../../../middlewares/validation-middleware.js"
+);
 
 describe("validate middleware", () => {
   let req, res, next;

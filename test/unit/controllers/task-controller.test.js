@@ -1,20 +1,29 @@
-import redisClient from "../../../config/redis.js";
-import Task from "../../../models/task-model.js";
+import { jest } from "@jest/globals";
 
-jest.mock("../../../models/task-model.js");
-jest.mock("../../../config/redis.js");
+jest.unstable_mockModule("../../../models/task-model.js", () => ({
+  default: {
+    findAll: jest.fn(),
+    findByPk: jest.fn(),
+    create: jest.fn(),
+  },
+}));
+
+jest.unstable_mockModule("../../../config/redis.js", () => ({
+  default: {
+    get: jest.fn(),
+    setEx: jest.fn(),
+    del: jest.fn(),
+  },
+}));
+
+const Task = (await import("../../../models/task-model.js")).default;
+const redisClient = (await import("../../../config/redis.js")).default;
+const { getTasks, createTask, updateTask, deleteTask } = await import(
+  "../../../controllers/task-controller.js"
+);
 
 describe("Task Controller", () => {
-  let getTasks, createTask, updateTask, deleteTask;
   let req, res, next;
-
-  beforeAll(async () => {
-    const controller = await import("../../../controllers/task-controller.js");
-    getTasks = controller.getTasks;
-    createTask = controller.createTask;
-    updateTask = controller.updateTask;
-    deleteTask = controller.deleteTask;
-  });
 
   beforeEach(() => {
     req = {

@@ -1,7 +1,15 @@
-import jwt from "jsonwebtoken";
-import { authenticate } from "../../../middlewares/auth-middleware.js";
+import { jest } from "@jest/globals";
 
-jest.mock("jsonwebtoken");
+jest.unstable_mockModule("jsonwebtoken", () => ({
+  default: {
+    verify: jest.fn(),
+  },
+}));
+
+const jwt = (await import("jsonwebtoken")).default;
+const { authenticate } = await import(
+  "../../../middlewares/auth-middleware.js"
+);
 
 describe("authenticate middleware", () => {
   let req, res, next;
