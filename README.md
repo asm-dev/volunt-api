@@ -1,39 +1,39 @@
 # VoluntAPI
 
-VoluntAPI es una plataforma de micro-voluntariado construida con Node.js, Express, Sequelize, Mongoose y Redis. Está diseñada para facilitar tareas de bajo compromiso como traducciones, diseño, revisión de CVs y más. El backend está enfocado en ofrecer seguridad, modularidad, cache eficiente y una arquitectura escalable.
+VoluntAPI is a micro-volunteering platform built with Node.js, Express, Sequelize, Mongoose and Redis. It is designed to facilitate low-commitment tasks such as translations, design, CV review and more. The backend focuses on providing security, modularity, efficient caching and a scalable architecture.
 
-Esta API se divide en varios servicios con responsabilidades claras. A nivel de persistencia, utiliza **PostgreSQL** con Sequelize para modelos relacionales (usuarios y tareas), y **MongoDB** con Mongoose para estructuras más dinámicas (voluntarios y comentarios). La elección de ambas tecnologías refleja un enfoque adaptado a los diferentes tipos de datos.
+This API is divided into several services with clear responsibilities. At the persistence level, it uses **PostgreSQL** with Sequelize for relational models (users and tasks), and **MongoDB** with Mongoose for more dynamic structures (volunteers and comments). The choice of both technologies reflects an approach adapted to the different types of data.
 
-Además, se incorpora **Redis** para cachear tareas públicas, mejorando el rendimiento en endpoints muy consultados y reduciendo la carga de consultas directas a la base de datos.
+In addition, **Redis** is incorporated to cache public tasks, improving performance on heavily queried endpoints and reducing the load of direct database queries.
 
 > [!NOTE]  
-> Se comprueba que el deploy a un entorno de producción sería completamente viable utilizando Heroku, donde levantamos una BD PostgreSQL, Redis y conectamos con un cluster de Mongo. Dado que por razones de seguridad deberíamos configurar accesos mediante IP/VPN y puesto que no hay add-ons gratuitos en Heroku, no comparto el link en el repositorio ya que eliminaré el acceso a dichos add-ons en el futuro cercano.
+> It has been verified that deploying to a production environment would be completely viable using Heroku, where we spin up a PostgreSQL DB, Redis and connect to a Mongo cluster. Since, for security reasons, we would need to configure access via IP/VPN, and since there are no free add-ons on Heroku, I am not sharing the link in the repository as I will remove access to those add-ons in the near future.
 
-## Características técnicas
+## Technical features
 
-- Autenticación con JWT. Seguridad por token con expiración y verificación middleware.
-- Contraseñas hasheadas. Usamos Bcrypts para hasear los datos de contraseñas con un salt único para proteger credenciales.
-- Middleware de seguridad. Incluye Helmet, sanitización manual y validación exhaustiva de datos.
-- Rendimiento mejorado mediante cache. Permitimos con Redys cache TTL de tareas, lo que mejora el tiempo de respuesta.
-- Uso de contenedores Docker. Facilita el desarrollo y producción.
-- Cobertura de test superior al 80%. Soporte para pruebas unitarias e integración con Jest y Supertest.
-- CI/CD. Se ejecutan tests y hace un deploy a Heroku al hacer push a main.
+- JWT authentication. Token-based security with expiration and middleware verification.
+- Hashed passwords. We use Bcrypts to hash password data with a unique salt to protect credentials.
+- Security middleware. Includes Helmet, manual sanitization and exhaustive data validation.
+- Improved performance through caching. With Redys we allow TTL caching of tasks, which improves response time.
+- Use of Docker containers. Eases development and production.
+- Test coverage above 80%. Support for unit and integration tests with Jest and Supertest.
+- CI/CD. Tests are run and a deploy to Heroku is made on push to main.
 
-Uno de los objetivos principales es asegurar la **seguridad**
+One of the main goals is to ensure **security**
 
-- Middleware de autenticación para proteger endpoints críticos.
-- Validación de entrada con `express-validator`.
-- Prevención de XSS y sanitización de inputs.
-- Uso de JWT con expiración de 1 hora.
+- Authentication middleware to protect critical endpoints.
+- Input validation with `express-validator`.
+- XSS prevention and input sanitization.
+- Use of JWT with 1-hour expiration.
 
-## Instalación y ejecución
+## Installation and execution
 
-### ¿Qué necesito?
+### What do I need?
 
-- Docker y Docker Compose
-- Node.js 18+ (si lo ejecutas fuera de contenedor Docker)
+- Docker and Docker Compose
+- Node.js 18+ (if you run it outside a Docker container)
 
-### ¿Cómo levanto la aplicación?
+### How do I start the application?
 
 ```bash
 git clone https://github.com/asm-devo/voluntapi.git
@@ -44,48 +44,48 @@ docker-compose up --build
 
 ![image](https://github.com/user-attachments/assets/4e8c2742-1116-4817-b11b-0f00cf7309c8)
 
-Ejecutamos `npm run dev` y la API estará disponible en [http://localhost:3000](http://localhost:3000).
+We run `npm run dev` and the API will be available at [http://localhost:3000](http://localhost:3000).
 
 ![image](https://github.com/user-attachments/assets/0885bfad-4b22-418a-ac64-fd39b3f5212e)
 
-Una vez levantada la aplicación, puedes ejecutar los **tests** con `npm run test`:
+Once the application is up, you can run the **tests** with `npm run test`:
 
 ![image](https://github.com/user-attachments/assets/201fd3f0-7ec6-408e-91f0-8650726184fe)
 
-Para **probar la API** te recomiendo importar el archivo `docs/postman_collection.json` en Postman, ya que permite acceso inmediato a todos los endpoints con varios ejemplos de uso directo.
+To **try out the API** I recommend importing the `docs/postman_collection.json` file into Postman, since it gives immediate access to all the endpoints with several examples of direct use.
 
-Los **endpoints** disponibles son:
+The available **endpoints** are:
 
-| Método | Ruta                | Descripción                    |
+| Method | Route               | Description                    |
 | ------ | ------------------- | ------------------------------ |
-| POST   | /auth/register      | Registro de nuevo usuario      |
-| POST   | /auth/login         | Inicio de sesión (retorna JWT) |
-| GET    | /tasks              | Listar tareas públicas         |
-| POST   | /tasks              | Crear tarea (requiere JWT)     |
-| PUT    | /tasks/:id          | Editar tarea propia            |
-| DELETE | /tasks/:id          | Eliminar tarea propia          |
-| POST   | /volunteers         | Inscribirse a una tarea        |
-| GET    | /volunteers/:taskId | Ver voluntarios de una tarea   |
+| POST   | /auth/register      | Register a new user            |
+| POST   | /auth/login         | Log in (returns JWT)           |
+| GET    | /tasks              | List public tasks              |
+| POST   | /tasks              | Create task (requires JWT)     |
+| PUT    | /tasks/:id          | Edit own task                  |
+| DELETE | /tasks/:id          | Delete own task                |
+| POST   | /volunteers         | Sign up for a task             |
+| GET    | /volunteers/:taskId | View a task's volunteers       |
 
 
-## Notas sobre la imagen Docker
+## Notes on the Docker image
 
-Este proyecto utiliza la imagen base:
+This project uses the base image:
 
 ```dockerfile
 FROM node:23-alpine
 ```
 
-Esta elección se fundamenta en la necesidad de minimizar las vulnerabilidades en entornos de producción. Las imágenes `*-alpine` están basadas en Alpine Linux, una distribución minimalista con una superficie de ataque extremadamente reducida. En el momento de elegir esta imagen, `node:23-alpine` presentaba **0 vulnerabilidades conocidas** (0 críticas, 0 altas, 0 medias, 0 bajas), mientras que otras versiones como `node:slim` contenían varias vulnerabilidades menores.
+This choice is based on the need to minimize vulnerabilities in production environments. `*-alpine` images are based on Alpine Linux, a minimalist distribution with an extremely small attack surface. At the time this image was chosen, `node:23-alpine` had **0 known vulnerabilities** (0 critical, 0 high, 0 medium, 0 low), while other variants such as `node:slim` contained several minor vulnerabilities.
 
-Además de mejorar la seguridad, el uso de Alpine también reduce el tamaño de la imagen, lo cual es beneficioso para la velocidad de despliegue, CI/CD y eficiencia en entornos de contenedores.
+Besides improving security, using Alpine also reduces the image size, which benefits deployment speed, CI/CD and efficiency in container environments.
 
-> Para mantener la compatibilidad con módulos que requieren compilación nativa (como `bcrypt`), se agregan herramientas básicas de compilación (`python3`, `make`, `g++`) durante la construcción.
+> To maintain compatibility with modules that require native compilation (such as `bcrypt`), basic build tools (`python3`, `make`, `g++`) are added during the build.
 
-## Posibles futuras iteraciones
+## Possible future iterations
 
-- Panel de administración
-- Soporte para tareas privadas o moderadas
-- CI/CD automático con GitHub Actions
-- Webhooks o notificaciones por email
-- Implementar sistema de likes o votación en tareas
+- Admin panel
+- Support for private or moderated tasks
+- Automatic CI/CD with GitHub Actions
+- Webhooks or email notifications
+- Implement a like or voting system on tasks
